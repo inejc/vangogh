@@ -1,0 +1,27 @@
+BOTTLENECK FEATURES (2048,)
+-----------------------------------------------------
+
+LINEAR SVM
+-----------------------
+
+MODE
+
+SUM
+
+MEAN
+
+MEDIAN
+
+FAR
+
+SVM
+-----------------------
+MODE
+
+SUM
+
+MEAN
+
+MEDIAN
+
+FAR

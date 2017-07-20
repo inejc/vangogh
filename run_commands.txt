@@ -1,0 +1,17 @@
+FEATURE EXTRACTION
+------------------
+KERAS_BACKEND=theano THEANO_FLAGS=device=gpu0,floatX=float32 python src/analysis/keras_extract_features.py --preprocess_stats painters_preprocessing_stats.npz --model cnn_3_1011_vl.h5 --features_layer 51 --list vgdb_2016/train/patch_list.txt --input vgdb_2016/train/patch/ --output vgdb_2016/train/feats_bottleneck/
+KERAS_BACKEND=theano THEANO_FLAGS=device=gpu0,floatX=float32 python src/analysis/keras_extract_features.py --preprocess_stats painters_preprocessing_stats.npz --model cnn_3_1011_vl.h5 --features_layer 46 --list vgdb_2016/train/patch_list.txt --input vgdb_2016/train/patch/ --output vgdb_2016/train/feats_map/
+
+KERAS_BACKEND=theano THEANO_FLAGS=device=gpu0,floatX=float32 python src/analysis/keras_extract_features.py --preprocess_stats painters_preprocessing_stats.npz --model cnn_3_1011_vl.h5 --features_layer 51 --list vgdb_2016/test/patch_list.txt --input vgdb_2016/test/patch/ --output vgdb_2016/test/feats_bottleneck/
+KERAS_BACKEND=theano THEANO_FLAGS=device=gpu0,floatX=float32 python src/analysis/keras_extract_features.py --preprocess_stats painters_preprocessing_stats.npz --model cnn_3_1011_vl.h5 --features_layer 46 --list vgdb_2016/test/patch_list.txt --input vgdb_2016/test/patch/ --output vgdb_2016/test/feats_map/
+
+TRAINING
+------------------
+python src/analysis/generate_model.py --algorithm svm_linear --dir vgdb_2016/train/feats_bottleneck/ --model vgdb_2016/clf/svm_linear_bottleneck.pkl --verbose
+python src/analysis/generate_model.py --algorithm svm_linear --dir vgdb_2016/train/feats_map/ --model vgdb_2016/clf/svm_linear_map.pkl --verbose
+
+EVALUATION
+------------------
+python src/analysis/classify.py --dir vgdb_2016/test/feats_bottleneck/ --model vgdb_2016/clf/svm_linear_bottleneck.pkl --aggregation far --gtruth
+python src/analysis/classify.py --dir vgdb_2016/test/feats_map/ --model vgdb_2016/clf/svm_linear_map.pkl --aggregation far --gtruth
