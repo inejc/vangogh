@@ -29,26 +29,27 @@ Generate classification model with cross-validation
 """
 
 
-import sys
 import argparse
-from multiprocessing import cpu_count
-import numpy as np
-from sklearn import svm, grid_search, cross_validation, metrics
 import cPickle as pickle
+import sys
+from multiprocessing import cpu_count
 
-from common import CACHE_SIZE, C_RANGE, GAMMA_RANGE, CLASS_WEIGHTS, N_ITER, K_FOLD, \
-    iter_type, dir_type, print_verbose, set_verbose_level, get_verbose_level, get_n_cores, set_n_cores
+from sklearn import svm, grid_search, cross_validation
+from sklearn.linear_model import LogisticRegression
 
-from gather_data import gen_data, parse_class
-
+from common import CACHE_SIZE, C_RANGE, GAMMA_RANGE, CLASS_WEIGHTS, N_ITER, \
+    K_FOLD, \
+    iter_type, dir_type, print_verbose, set_verbose_level, get_verbose_level, \
+    set_n_cores
+from gather_data import gen_data
 
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    parser.add_argument('-k', '--kernel', type=str, choices=['linear', 'rbf'], default='linear',
-                        help='SVM kernel (default: linear)')
+    parser.add_argument('-a', '--algorithm', type=str, choices=['svm_linear', 'svm_rbf', 'lr'], default='lr',
+                        help='classification algorithm')
     parser.add_argument('-s', '--search', type=str, choices=['grid', 'random'], default='random',
                         help='search mode (default: random)')
     parser.add_argument('-i', '--iter', default=N_ITER, type=iter_type,
@@ -75,11 +76,15 @@ def generate_model(data, classes, args):
                         'class_weight': CLASS_WEIGHTS}
 
     # Define the classifier
-    if args.kernel == 'rbf':
+    if args.algorithm == 'svm_rbf':
         clf = svm.SVC(cache_size=CACHE_SIZE)
         tuned_parameters['gamma'] = GAMMA_RANGE
-    else:
+    elif args.algorithm == 'svm_linear':
         clf = svm.LinearSVC(dual=False)
+    elif args.algorithm == 'lr':
+        clf = LogisticRegression()
+    else:
+        raise Exception
 
     print_verbose("Classifier: %s" % str(clf), 5)
     print_verbose("Parameters: %s" % str(tuned_parameters), 5)

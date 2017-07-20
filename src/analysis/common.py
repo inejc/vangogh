@@ -48,10 +48,10 @@ C_RANGE = 2.0 ** np.arange(-10, 16)
 GAMMA_RANGE = 2.0 ** np.arange(-15, 4)
 CLASS_WEIGHTS = [None, 'balanced']
 
-K_FOLD = 3
+K_FOLD = 5
 
 CACHE_SIZE = 1000
-N_ITER = 10
+N_ITER = 50
 
 WINDOW_SIZE = 224
 

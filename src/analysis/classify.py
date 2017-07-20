@@ -87,7 +87,7 @@ def eval_perf(classification):
     print_verbose("Confusion Matrix:", 0)
     print_verbose(metrics.confusion_matrix(y_true, y_pred), 0)
     print_verbose("Classification Report:", 0)
-    print_verbose(metrics.classification_report(y_true, y_pred), 0)
+    print_verbose(metrics.classification_report(y_true, y_pred, digits=4), 0)
 
 
 def agg_pred_mode(pred):
