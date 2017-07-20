@@ -88,7 +88,11 @@ def main(argv):
                 os.makedirs(path)
             fpath = os.path.join(args.output, fname + ".feat")
 
-            np.savetxt(fpath, features[idx])
+            feature = features[idx]
+            if len(feature.shape) > 1:
+                feature = feature.flatten()
+
+            np.savetxt(fpath, feature)
 
 
 if __name__ == "__main__":
